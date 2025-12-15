@@ -1,0 +1,41 @@
+apiVersion: ratelimit.solo.io/v1alpha1
+kind: RateLimitConfig
+metadata:
+  name: ratelimit-config
+  namespace: httpbin
+spec:
+  raw:
+    descriptors:
+      - descriptors:
+        - key: userId
+          rateLimit:
+            requestsPerUnit: 10
+            unit: MINUTE
+        key: usagePlan
+        value: defaultPlan
+      - descriptors:
+        - key: userId
+          rateLimit:
+            requestsPerUnit: 5
+            unit: MINUTE
+        key: usagePlan
+        value: team-a-5-tps
+      - descriptors:
+        - key: userId
+          rateLimit:
+            requestsPerUnit: 3
+            unit: MINUTE
+        key: usagePlan
+        value: team-a-3-tps
+    rateLimits:
+      - actions:
+        - requestHeaders:
+            descriptorKey: usagePlan
+            headerName: x-solo-plan
+        - metadata:
+            descriptorKey: userId
+            metadataKey:
+              key: envoy.filters.http.ext_authz
+              path:
+                - key: userId
+
