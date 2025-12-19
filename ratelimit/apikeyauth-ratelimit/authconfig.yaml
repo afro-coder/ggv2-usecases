@@ -1,0 +1,21 @@
+apiVersion: extauth.solo.io/v1
+kind: AuthConfig
+metadata:
+  name: apikey-auth
+  namespace: httpbin
+spec:
+  configs:
+
+    - apiKeyAuth:
+        # The request header name that holds the API key.
+        # This field is optional and defaults to api-key if not present.
+        headerName: api-key
+        headersFromMetadataEntry:
+          x-solo-username:
+            name: username
+            required: false
+          x-solo-plan:
+            name: plan
+            required: false
+        labelSelector:
+          team: team-a

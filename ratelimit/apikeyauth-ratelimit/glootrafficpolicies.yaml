@@ -1,0 +1,20 @@
+apiVersion: gloo.solo.io/v1alpha1
+kind: GlooTrafficPolicy
+metadata:
+  name: test-extauth-policy
+  namespace: httpbin
+spec:
+  targetRefs:
+    - name: mycustom-gateway
+      group: gateway.networking.k8s.io
+      kind: Gateway
+  glooExtAuth:
+    authConfigRef:
+      name: apikey-auth
+      namespace: httpbin
+  glooRateLimit:
+    global:
+      rateLimitConfigRefs:
+        - name: ratelimit-config
+          namespace: httpbin
+
